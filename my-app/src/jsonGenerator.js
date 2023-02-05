@@ -5,15 +5,14 @@ const randomTextPattern = /Random\(text, (\d+)\)/g;
 const incrementPattern = /Increment\((\d+)\)/g;
 const DecrementPattern = /Decrement\((\d+)\)/g;
 
-const fs = require("fs");
-
-const objectValueCalc = (value, count) => {
+export const objectValueCalc = (value, count) => {
+  console.log(value);
   let objectValue = value;
 
   if (typeof objectValue === "string") {
-    objectValue = replaceIfMatchRandomInt(objectValue);
+    objectValue = replaceIfMatchRandomInt(objectValue, randomIntPattern);
 
-    objectValue = replaceIfMatchRandomFloat(objectValue);
+    objectValue = replaceIfMatchRandomFloat(objectValue, randomFloatPattern);
 
     objectValue = objectValue.replace(incrementPattern, (match, p1) => {
       return parseInt(p1) + count;
@@ -23,23 +22,31 @@ const objectValueCalc = (value, count) => {
       return parseInt(p1) - count;
     });
 
-    objectValue = replaceIfMatchRandomString(objectValue);
+    objectValue = replaceIfMatchRandomString(objectValue, randomStringPattern);
 
-    objectValue = replaceIfMatchRandomText(objectValue);
+    objectValue = replaceIfMatchRandomText(objectValue, randomTextPattern);
+  } else if (typeof objectValue === "object") {
+    for (const key in objectValue) {
+      objectValue[key] = objectValueCalc(objectValue[key], count);
+    }
+  } else if (typeof objectValue === "array") {
+    for (let i = 0; i < objectValue.length; i++) {
+      objectValue[i] = objectValueCalc(objectValue[i], count);
+    }
   }
 
   return objectValue;
 };
 
-const getRandomInt = (min, max) => {
+export const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const getRandomFloat = (min, max) => {
+export const getRandomFloat = (min, max) => {
   return Math.random() * (max - min) + min;
 };
 
-const getRandomString = (length) => {
+export const getRandomString = (length) => {
   let result = "";
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -50,7 +57,7 @@ const getRandomString = (length) => {
   return result;
 };
 
-const getRandomText = (length) => {
+export const getRandomText = (length) => {
   const loremIpsum =
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
   let result = "";
@@ -60,26 +67,26 @@ const getRandomText = (length) => {
   return result.trim();
 };
 
-const replaceIfMatchRandomText = (input) => {
-  return input.replace(randomTextPattern, (match, p1) => {
+export const replaceIfMatchRandomText = (input, pattern) => {
+  return input.replace(pattern, (match, p1) => {
     return getRandomText(parseInt(p1));
   });
 };
 
-const replaceIfMatchRandomFloat = (input) => {
-  return input.replace(randomFloatPattern, (match, p1, p2) => {
+export const replaceIfMatchRandomFloat = (input, pattern) => {
+  return input.replace(pattern, (match, p1, p2) => {
+    return getRandomFloat(parseInt(p1), parseInt(p2));
+  });
+};
+
+export const replaceIfMatchRandomInt = (input, pattern) => {
+  return input.replace(pattern, (match, p1, p2) => {
     return getRandomInt(parseInt(p1), parseInt(p2));
   });
 };
 
-const replaceIfMatchRandomInt = (input) => {
-  return input.replace(randomIntPattern, (match, p1, p2) => {
-    return getRandomInt(parseInt(p1), parseInt(p2));
-  });
-};
-
-const replaceIfMatchRandomString = (input) => {
-  return input.replace(randomStringPattern, (match, p1, p2) => {
+export const replaceIfMatchRandomString = (input, pattern) => {
+  return input.replace(pattern, (match, p1, p2) => {
     let strings = "";
     for (let i = 0; i < parseInt(p2); i++) {
       strings += getRandomString(parseInt(p1)) + "-";
@@ -88,21 +95,20 @@ const replaceIfMatchRandomString = (input) => {
   });
 };
 
-const jsonCreator = (numberOfObjects, filepath) => {
-  const file = fs.readFileSync(filepath);
-  const jsonData = JSON.parse(file);
+export function jsonCreator(schema, numberOfObjects) {
+  const jsonData = schema;
   const json = [];
   let count = 0;
+  console.log("start", jsonData);
   for (let i = 0; i < numberOfObjects; i++) {
     let object = {};
-    for (key in jsonData) {
+    for (const key in jsonData) {
       object[key] = objectValueCalc(jsonData[key], count);
     }
     json.push(object);
     count++;
   }
+  console.log("end");
 
   return json;
-};
-
-console.log(jsonCreator(5, "input.json"));
+}
