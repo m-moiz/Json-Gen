@@ -1,71 +1,20 @@
 import { RandomGenerator } from "./randomGenerator";
 
-const randomIntPattern = /Random\(int, (\d+), (\d+)\)/g;
-const randomFloatPattern = /Random\(float, (\d+), (\d+)\)/g;
-const randomStringPattern = /Random\(string, (\d+), (\d+)\)/g;
-const randomTextPattern = /Random\(text, (\d+)\)/g;
-const randomSentencePattern = /Random\(sentence, (\d+)\)/g;
+const randomPattern = /Random\((\w+),? ?(\d+)?,? ?(\d+)?\)/g;
 const incrementPattern = /Increment\((\d+)\)/g;
 const DecrementPattern = /Decrement\((\d+)\)/g;
-const emailPattern = /Random\(email\)/g;
-const namePattern = /Random\(name\)/g;
-const addressPattern = /Random\(address\)/g;
-const boolPattern = /Random\(bool\)/g;
-const datePattern = /Random\(date, (\d+), (\d+)\)/g;
-const timePattern = /Random\(time\)/g;
-const cityPattern = /Random\(city, (\d+), (\d+)\)/g;
-const statePattern = /Random\(state, (\d+), (\d+)\)/g;
-const zipPattern = /Random\(zip, (\d+), (\d+)\)/g;
-const countryPattern = /Random\(country, (\d+), (\d+)\)/g;
-const latitudePattern = /Random\(latitude\)/g;
-const longitudePattern = /Random\(longitude\)/g;
-const guidPattern = /Random\(guid\)/g;
-const ipv4Pattern = /Random\(ipv4\)/g;
-const ipv6Pattern = /Random\(ipv6\)/g;
-const colorPattern = /Random\(color\)/g;
-const hexPattern = /Random\(hex\)/g;
-const rgbPattern = /Random\(rgb\)/g;
-const rgbaPattern = /Random\(rgba\)/g;
-const hslPattern = /Random\(hsl\)/g;
-const hslaPattern = /Random\(hsla\)/g;
-const wordPattern = /Random\(word, (\d+), (\d+)\)/g;
-const wordsPattern = /Random\(words, (\d+), (\d+)\)/g;
-const paragraphPattern = /Random\(paragraph, (\d+), (\d+)\)/g;
-const paragraphsPattern = /Random\(paragraphs, (\d+), (\d+)\)/g;
-const sentencePattern = /Random\(sentence, (\d+), (\d+)\)/g;
-const sentencesPattern = /Random\(sentences, (\d+), (\d+)\)/g;
-const titlePattern = /Random\(title, (\d+), (\d+)\)/g;
-const firstNamePattern = /Random\(firstName, (\d+), (\d+)\)/g;
-const lastNamePattern = /Random\(lastName, (\d+), (\d+)\)/g;
-const fullNamePattern = /Random\(fullName, (\d+), (\d+)\)/g;
-const jobTitlePattern = /Random\(jobTitle, (\d+), (\d+)\)/g;
-const prefixPattern = /Random\(prefix, (\d+), (\d+)\)/g;
-const suffixPattern = /Random\(suffix, (\d+), (\d+)\)/g;
 
 export const objectValueCalc = (value, count) => {
   let objectValue = value;
 
   if (typeof objectValue === "string") {
-    objectValue = replaceIfMatchRandomInt(objectValue, randomIntPattern);
-    objectValue = replaceIfMatchRandomFloat(objectValue, randomFloatPattern);
-    objectValue = replaceIfMatchRandomSentence(
-      objectValue,
-      randomSentencePattern
-    );
+    objectValue = replaceIfMatch(objectValue);
     objectValue = objectValue.replace(incrementPattern, (match, p1) => {
       return parseInt(p1) + count;
     });
     objectValue = objectValue.replace(DecrementPattern, (match, p1) => {
       return parseInt(p1) - count;
     });
-    objectValue = replaceIfMatchRandomString(objectValue, randomStringPattern);
-    objectValue = replaceIfMatchRandomText(objectValue, randomTextPattern);
-    objectValue = replaceIfMatchRandomEmail(objectValue, emailPattern);
-    objectValue = replaceIfMatchRandomName(objectValue, namePattern);
-    objectValue = replaceIfMatchRandomAddress(objectValue, addressPattern);
-    objectValue = replaceIfMatchRandomDate(objectValue, datePattern);
-    objectValue = replaceIfMatchRandomTime(objectValue, timePattern);
-    objectValue = replaceIfMatchRandomBoolean(objectValue, boolPattern);
   } else if (typeof objectValue === "object" && !Array.isArray(objectValue)) {
     const newObjectValue = {};
     for (const key in objectValue) {
@@ -83,79 +32,46 @@ export const objectValueCalc = (value, count) => {
   return objectValue;
 };
 
-const replaceIfMatchRandomEmail = (input, pattern) => {
-  return input.replace(pattern, (match, p1, p2) => {
-    return RandomGenerator.generateRandomEmail(p1, p2);
-  });
-};
-
-const replaceIfMatchRandomName = (input, pattern) => {
-  return input.replace(pattern, (match, p1, p2) => {
-    return RandomGenerator.generateRandomName(p1, p2);
-  });
-};
-
-const replaceIfMatchRandomAddress = (input, pattern) => {
-  return input.replace(pattern, (match, p1, p2) => {
-    return RandomGenerator.generateRandomAddress(p1, p2);
-  });
-};
-
-const replaceIfMatchRandomDate = (input, pattern) => {
-  return input.replace(pattern, (match, p1, p2) => {
-    return RandomGenerator.generateRandomDate(p1, p2);
-  });
-};
-
-const replaceIfMatchRandomTime = (input, pattern) => {
-  return input.replace(pattern, (match, p1, p2) => {
-    return RandomGenerator.generateRandomTime(p1, p2);
-  });
-};
-
-const replaceIfMatchRandomBoolean = (input, pattern) => {
-  return input.replace(pattern, (match, p1, p2) => {
-    return RandomGenerator.generateRandomBoolean();
-  });
-};
-
-const replaceIfMatchRandomColor = (input, pattern) => {
-  return input.replace(pattern, (match, p1, p2) => {
-    return RandomGenerator.generateRandomColor();
-  });
-};
-
-const replaceIfMatchRandomSentence = (input, pattern) => {
-  return input.replace(pattern, (match, p1) => {
-    return RandomGenerator.generateRandomSentence(p1);
-  });
-};
-
-const replaceIfMatchRandomText = (input, pattern) => {
-  return input.replace(pattern, (match, p1) => {
-    return RandomGenerator.generateRandomText(parseInt(p1));
-  });
-};
-
-const replaceIfMatchRandomFloat = (input, pattern) => {
-  return input.replace(pattern, (match, p1, p2) => {
-    return RandomGenerator.generateRandomFloat(parseInt(p1), parseInt(p2));
-  });
-};
-
-const replaceIfMatchRandomInt = (input, pattern) => {
-  return input.replace(pattern, (match, p1, p2) => {
-    return RandomGenerator.generateRandomInt(parseInt(p1), parseInt(p2));
-  });
-};
-
-const replaceIfMatchRandomString = (input, pattern) => {
-  return input.replace(pattern, (match, p1, p2) => {
-    let strings = "";
-    for (let i = 0; i < parseInt(p2); i++) {
-      strings += RandomGenerator.generateRandomString(parseInt(p1)) + "-";
+const replaceIfMatch = (input) => {
+  return input.replace(randomPattern, (match, p1, p2, p3) => {
+    switch (p1) {
+      case "int":
+        return RandomGenerator.generateRandomInt(p2, p3);
+      case "float":
+        return RandomGenerator.generateRandomFloat(p2, p3);
+      case "string":
+        return RandomGenerator.generateRandomString(p2, p3);
+      case "text":
+        return RandomGenerator.generateRandomText(p2);
+      case "sentence":
+        return RandomGenerator.generateRandomSentence(p2);
+      case "email":
+        return RandomGenerator.generateRandomEmail();
+      case "name":
+        return RandomGenerator.generateRandomName();
+      case "address":
+        return RandomGenerator.generateRandomAddress();
+      case "bool":
+        return RandomGenerator.generateRandomBool();
+      case "date":
+        return RandomGenerator.generateRandomDate(p2, p3);
+      case "time":
+        return RandomGenerator.generateRandomTime();
+      case "latitude":
+        return RandomGenerator.generateRandomLatitude();
+      case "longitude":
+        return RandomGenerator.generateRandomLongitude();
+      case "guid":
+        return RandomGenerator.generateRandomGUID();
+      case "ipv4":
+        return RandomGenerator.generateRandomIPV4();
+      case "ipv6":
+        return RandomGenerator.generateRandomIPV6();
+      case "color":
+        return RandomGenerator.generateRandomColor();
+      default:
+        return match;
     }
-    return strings.slice(0, -1);
   });
 };
 

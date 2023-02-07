@@ -112,9 +112,10 @@ export const RandomGenerator = {
   },
 
   generateRandomAddress() {
-    return `${this.generateRandomInt(1, 1000)} ${this.generateRandomString(
-      10
-    )} ${this.generateRandomString(10)}`;
+    return `${this.generateRandomInt(
+      1,
+      1000
+    )} ${this.generateRandomName()} St.`;
   },
 
   generateRandomLatitude() {
