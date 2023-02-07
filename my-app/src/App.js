@@ -42,7 +42,17 @@ function App() {
     link.click();
     setDownloadEnabled(false);
   };
-
+  const outOfBounds = (e) => {
+    if (
+      e.target.value === 0 ||
+      e.target.value === "" ||
+      e.target.value > 100000 ||
+      isNaN(e.target.value)
+    ) {
+      return true;
+    }
+    return false;
+  };
   let placeholder = jsonOutput ? jsonOutput.slice(0, 25) : [];
 
   return (
@@ -70,12 +80,7 @@ function App() {
           placeholder="Number of Objects"
           className="input"
           onChange={(e) => {
-            if (
-              e.target.value === 0 ||
-              e.target.value === "" ||
-              e.target.value > 100000 ||
-              isNaN(e.target.value)
-            ) {
+            if (outOfBounds(e)) {
               setShowMessage(true);
               setDownloadEnabled(false);
               setGenerateEnabled(false);
