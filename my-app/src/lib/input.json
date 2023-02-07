@@ -1,9 +1,10 @@
 {
-  "name": "Random(string, 5, 1) Increment(1)",
+  "name": "Random(name)",
   "age": "Random(int, 1, 100)",
   "url": "/api/Random(int, 1, 200)/this-Increment(1)-Random(float, 2, 50) Decrement(10)-Random(string, 2, 13).jpg",
   "description": "Random(string, 5, 1) Increment(1)",
   "configGlossary:poweredByIcon": "/images/Increment(1)",
+  "email": "Random(email)",
   "stage": {
     "stage_name": "Random(string, 5, 1) Increment(1)",
     "stage_description": "Random(string, 5, 1) Increment(1)",
