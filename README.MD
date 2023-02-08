@@ -22,13 +22,11 @@ In order to add random functionality, just add Random(type, arg1?, arg2?) - arg1
 }
 ```
 
-```
-Random(int, 100, 1000) will generate an integer between 100 and 1000 and Random(string, 1, 2) will generate a string with length 1 * 2 times.
+Random(int, 100, 1000) will generate an integer between 100 and 1000 and Random(string, 1, 2) will generate a string with length 1 \* 2 times.
 
 Here are all the different Random functions that you can use- Note that spaces between commas are necessary:
 
 ```
-
 Random(int, min, max)
 Random(float, min, max)
 Random(string, length)
@@ -40,28 +38,21 @@ Random(address)
 Random(email)
 Random(ipv4)
 Random(ipv6)
-
 ```
 
 Increment and Decrement functions can be used to differentiate objects. First here is the pattern for these functions:
 
 ```
-
 Increment(startValue)
 Decrement(startValue)
-
 ```
 
 Here is an example of them being used to generate data:
 
 ```
-
 {
 name: "Random(name) Increment(1),
 image: "/api/images-Increment(1)",
 address: "Random(address)" Decrement(50)
 }
-
-```
-
 ```
