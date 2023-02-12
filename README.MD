@@ -1,13 +1,14 @@
 JSON Gen is a fake json generator which is meant to be simple and flexible to use.
+Visit the app here [Json Gen](https://jsongen.netlify.app/)
 
 # How to use:
 
 Enter or modify the schema of the objects that you would like to generate. For example:
 
-```json
+```javascript
 {
-    name: "John"
-    address: "200 St"
+  "name": "John";
+  "address": "200 St";
 }
 ```
 
@@ -15,10 +16,10 @@ If you specify 10 in the input field in the bottom and hit generate, you will se
 
 In order to add random functionality, just add Random(type, arg1?, arg2?) - arg1 and arg2 are optional and depend on the type. For example:
 
-```json
+```javascript
 {
-    name: "Random(string, 1, 2)"
-    address: "Random(int, 100, 1000)"
+  "name": "Random(string, 1, 2)";
+  "address": "Random(int, 100, 1000)";
 }
 ```
 
@@ -49,10 +50,10 @@ Decrement(startValue);
 
 Lets look at an example of these being used to generate data:
 
-```json
+```javascript
 {
-  "name": "Random(name) Increment(1)",
-  "image": "/api/images-Increment(1)",
-  "address": "Random(address) Decrement(50)"
+  name: "Random(name) Increment(1)",
+  image: "/api/images-Increment(1)",
+  address: "Random(address) Decrement(50)"
 }
 ```
