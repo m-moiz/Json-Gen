@@ -1,5 +1,6 @@
 JSON Gen is a fake json generator which is meant to be simple and flexible to use.
-Visit the app here [Json Gen](https://jsongen.netlify.app/)
+
+[Visit the app here](https://jsongen.netlify.app/)
 
 # How to use:
 
