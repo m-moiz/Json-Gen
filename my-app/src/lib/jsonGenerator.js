@@ -2,34 +2,32 @@ import { RandomGenerator } from "./randomGenerator";
 
 const randomPattern = /Random\((\w+),? ?(\d+)?,? ?(\d+)?\)/g;
 const incrementPattern = /Increment\((\d+)\)/g;
-const DecrementPattern = /Decrement\((\d+)\)/g;
+const decrementPattern = /Decrement\((\d+)\)/g;
 
-export const objectValueCalc = (value, count) => {
-  let objectValue = value;
-
-  if (typeof objectValue === "string") {
-    objectValue = replaceIfMatch(objectValue);
-    objectValue = objectValue.replace(incrementPattern, (match, p1) => {
+export const valueCalc = (value, count) => {
+  if (typeof value === "string") {
+    value = replaceIfMatch(value);
+    value = value.replace(incrementPattern, (match, p1) => {
       return parseInt(p1) + count;
     });
-    objectValue = objectValue.replace(DecrementPattern, (match, p1) => {
+    value = value.replace(decrementPattern, (match, p1) => {
       return parseInt(p1) - count;
     });
-  } else if (typeof objectValue === "object" && !Array.isArray(objectValue)) {
-    const newObjectValue = {};
-    for (const key in objectValue) {
-      newObjectValue[key] = objectValueCalc(objectValue[key], count);
+  } else if (typeof value === "object" && !Array.isArray(value)) {
+    const newValue = {};
+    for (const key in value) {
+      newValue[key] = valueCalc(value[key], count);
     }
-    objectValue = newObjectValue;
-  } else if (Array.isArray(objectValue)) {
-    const newObjectValue = [];
-    for (let i = 0; i < objectValue.length; i++) {
-      newObjectValue[i] = objectValueCalc(objectValue[i], count);
+    value = newValue;
+  } else if (Array.isArray(value)) {
+    const newValue = [];
+    for (let i = 0; i < value.length; i++) {
+      newvalue[i] = valueCalc(value[i], count);
     }
-    objectValue = newObjectValue;
+    value = newValue;
   }
 
-  return objectValue;
+  return value;
 };
 
 const replaceIfMatch = (input) => {
@@ -84,7 +82,7 @@ export function jsonCreator(schema, numberOfObjects) {
   for (let i = 0; i < numberOfObjects; i++) {
     let object = {};
     for (const key in jsonData) {
-      object[key] = objectValueCalc(jsonData[key], count);
+      object[key] = valueCalc(jsonData[key], count);
     }
     json.push(object);
     count++;

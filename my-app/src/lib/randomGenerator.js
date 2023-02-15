@@ -6,7 +6,7 @@ export const RandomGenerator = {
   },
 
   generateRandomFloat(min, max) {
-    return Math.round(((Math.random() * (max - min) + min) * 1000) / 1000);
+    return Math.round((Math.random() * (max - min) + min) * 100) / 100;
   },
 
   generateRandomString(length) {
@@ -108,7 +108,7 @@ export const RandomGenerator = {
   },
 
   generateRandomColor() {
-    return `#${this.generateRandomString(6)}`;
+    return `#${this.generateRandomString(6).toUpperCase()}`;
   },
 
   generateRandomAddress() {
@@ -152,5 +152,12 @@ export const RandomGenerator = {
       0,
       59
     )}:${this.generateRandomInt(0, 59)}`;
+  },
+
+  generateRandomPhoneNumber() {
+    return `${this.generateRandomInt(0, 999)}-${this.generateRandomInt(
+      0,
+      999
+    )}-${this.generateRandomInt(0, 9999)}`;
   },
 };
