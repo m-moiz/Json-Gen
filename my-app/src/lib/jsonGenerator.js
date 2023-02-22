@@ -13,6 +13,7 @@ export const valueCalc = (value, count) => {
     value = value.replace(decrementPattern, (match, p1) => {
       return parseInt(p1) - count;
     });
+    // The value could be an object so recurse for each property
   } else if (typeof value === "object" && !Array.isArray(value)) {
     const newValue = {};
     for (const key in value) {
@@ -22,7 +23,7 @@ export const valueCalc = (value, count) => {
   } else if (Array.isArray(value)) {
     const newValue = [];
     for (let i = 0; i < value.length; i++) {
-      newvalue[i] = valueCalc(value[i], count);
+      newValue[i] = valueCalc(value[i], count);
     }
     value = newValue;
   }
@@ -50,7 +51,7 @@ const replaceIfMatch = (input) => {
       case "address":
         return RandomGenerator.generateRandomAddress();
       case "bool":
-        return RandomGenerator.generateRandomBool();
+        return RandomGenerator.generateRandomBoolean();
       case "date":
         return RandomGenerator.generateRandomDate(p2, p3);
       case "time":

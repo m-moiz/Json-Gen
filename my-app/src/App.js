@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import { jsonCreator } from "./lib/jsonGenerator";
 import JsonComponent from "./jsonComponent";
 import { schema } from "./inputSchema";
+import { outOfBounds, generateFileUrl } from "./lib/utils";
+import {
+  MAX_ALLOWED_NUMBER_OF_OBJECTS,
+  MIN_ALLOWED_NUMBER_OF_OBJECTS,
+  OUTPUT_PREVIEW_LENGTH,
+} from "./config";
 import Loader from "./loader";
 import "./App.css";
 
@@ -31,29 +37,17 @@ function App() {
     }
   }, [isGenerating]);
 
-  const generateFileUrl = () => {
-    const blob = new Blob([JSON.stringify(jsonOutput)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
+  const createLinkElement = (url) => {
     const link = document.createElement("a");
     link.download = "data.json";
     link.href = url;
     link.click();
     setDownloadEnabled(false);
   };
-  const outOfBounds = (e) => {
-    if (
-      e.target.value === 0 ||
-      e.target.value === "" ||
-      e.target.value > 100000 ||
-      isNaN(e.target.value)
-    ) {
-      return true;
-    }
-    return false;
-  };
-  let placeholder = jsonOutput ? jsonOutput.slice(0, 25) : [];
+
+  let placeholder = jsonOutput
+    ? jsonOutput.slice(0, OUTPUT_PREVIEW_LENGTH)
+    : [];
 
   return (
     <div className="App">
@@ -108,7 +102,10 @@ function App() {
           <button
             disabled={!downloadEnabled}
             className="button dwnld-button"
-            onClick={() => generateFileUrl()}
+            onClick={() => {
+              const url = generateFileUrl(jsonOutput);
+              createLinkElement(url);
+            }}
           >
             Download
           </button>
@@ -123,7 +120,8 @@ function App() {
             margin: "0",
           }}
         >
-          Value must be a number between 1 and 100000
+          Value must be a number between {MIN_ALLOWED_NUMBER_OF_OBJECTS} and{" "}
+          {MAX_ALLOWED_NUMBER_OF_OBJECTS}
         </p>
       ) : null}
     </div>
