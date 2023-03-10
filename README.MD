@@ -2,6 +2,8 @@ JSON Gen is a fake json generator which is meant to be simple and flexible to us
 
 [Visit the app here](https://jsongen.netlify.app/)
 
+[For step by step instructions on how to use the app, click here](https://m-moiz.github.io/Json-Gen/)
+
 # How to use:
 
 Enter or modify the schema of the objects that you would like to generate. For example:
@@ -47,14 +49,4 @@ Increment and Decrement functions can be used to differentiate objects. Here is 
 ```javascript
 Increment(startValue);
 Decrement(startValue);
-```
-
-Lets look at an example of these being used to generate data:
-
-```javascript
-{
-  name: "Random(name) Increment(1)",
-  image: "/api/images-Increment(1)",
-  address: "Random(address) Decrement(50)"
-}
 ```
